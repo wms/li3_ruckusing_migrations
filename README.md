@@ -21,7 +21,7 @@
 5. Specify your default db connection by changing the value of DEFAULT_ENV in ``/path/to/li3_app/libraries/li3_ruckusing_migrations/config/bootstrap.php``.
 
 ##Usage
-**Note** refer to the [original ruckusing-migrations' documentation][2] for detailed usage instruction.
+**Note** refer to the [original ruckusing-migrations' documentation][2] for detailed usage instructions.
 
 In order to be able to use the plugin, you need to have ``/path/to/lithium/libraries/lithium/console`` in your PATH.
 
@@ -35,7 +35,7 @@ In order to be able to use the plugin, you need to have ``/path/to/lithium/libra
 
         /path/to/li3_app$ li3 migration db:migrate
 
-  The above will run using the connection set as the DEFAULT_ENV. To run the migration using a different app connection, specify ``ENV``:
+  The above will run using the connection set by DEFAULT_ENV. To run the migration using a different app connection, specify ``ENV``:
 
         /path/to/li3_app$ li3 migration db:migrate ENV=your-connection
 
