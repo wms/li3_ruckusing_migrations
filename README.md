@@ -16,7 +16,7 @@
 
 4. Create ``db`` and ``migrate`` directories:
 
-        /path/to/li3_app/config$ mkdir db && cd db && mkdir migrate
+        /path/to/li3_app/config$ mkdir -P db/migrate
 
 5. Specify your default db connection by changing the value of DEFAULT_ENV in ``/path/to/li3_app/libraries/li3_ruckusing_migrations/config/bootstrap.php``.
 
