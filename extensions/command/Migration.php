@@ -18,7 +18,7 @@ class Migration extends \lithium\console\Command {
     array_walk(
       $args,
       function($e, $k) use (&$env){
-        if(preg_match('/ENV=(\w+)/i', $e, $matches)) {
+        if(preg_match('/ENV=(\S+)/i', $e, $matches)) {
           $env = $matches[1];
         }
       }
