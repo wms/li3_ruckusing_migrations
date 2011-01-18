@@ -7,6 +7,9 @@ use \lithium\data\Connections;
 require RUCKUSING_BASE . '/lib/classes/util/class.Ruckusing_Logger.php';
 require RUCKUSING_BASE . '/lib/classes/class.Ruckusing_FrameworkRunner.php';
 
+/**
+ * Acts as a wrapper for ruckusing-migrations.
+ */
 class Migration extends \lithium\console\Command {
 
   private $ruckusing_db_config;
