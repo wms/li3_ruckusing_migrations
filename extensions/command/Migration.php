@@ -3,6 +3,7 @@
 namespace li3_migration\extensions\command;
 
 use \lithium\data\Connections;
+use \lithium\core\Environment;
 
 require RUCKUSING_BASE . '/lib/classes/util/class.Ruckusing_Logger.php';
 require RUCKUSING_BASE . '/lib/classes/class.Ruckusing_FrameworkRunner.php';
@@ -13,45 +14,32 @@ require RUCKUSING_BASE . '/lib/classes/class.Ruckusing_FrameworkRunner.php';
 class Migration extends \lithium\console\Command {
 
   private $ruckusing_db_config;
+  public $connection = 'default';
 
   public function _init() {
     parent::_init();
-    $args = $this->_config['request']->args;
-    $env = false;
-    array_walk(
-      $args,
-      function($e, $k) use (&$env){
-        if(preg_match('/ENV=(\S+)/i', $e, $matches)) {
-          $env = $matches[1];
-        }
-      }
-    );
-    if ($env) {
-      $connection = Connections::get($env);
-    }
-    else {
-      $connection = Connections::get(DEFAULT_ENV);
-      $env = 'development';
-    }
-    if (is_null($connection)) {
-      $this->error("Error: Connection {$env} not defined in your Li3 app.\n");
-      exit;
-    }
-    $this->ruckusing_db_config = array(
-      $env => array(
+    if($connection = Connections::get($this->connection)) {
+      $this->ruckusing_db_config = array(
+        $this->connection => array(
           'type'      => strtolower($connection->_config['adapter']),
           'host'      => $connection->_config['host'],
           'port'      => 3306,
           'database'  => $connection->_config['database'],
           'user'      => $connection->_config['login'],
           'password'  => $connection->_config['password'],
-      ),
-    );
+        )
+      );
+    }
   }
 
   public function run($command = null) {
-    //var_dump ($args);
-    //Connections::get('default');
+    $env = Environment::get();
+    $this->out("Using Environment: '$env' and Connection: '{$this->connection}'.");
+
+    if(!$this->ruckusing_db_config) {
+      $this->error('Error: cannot cannot connect to database');
+      return;
+    }
     if (is_null($command)) {
       $this->help();
       return;
@@ -83,7 +71,7 @@ Commands:
   }
 
   private function execute($command, $args) {
-    $argv = array_merge(array(''), array($command), $args);
+    $argv = array_merge(array(''), array($command), $args, array("ENV=$this->connection"));
     $main = new \Ruckusing_FrameworkRunner($this->ruckusing_db_config, $argv);
     $main->execute();
   }
